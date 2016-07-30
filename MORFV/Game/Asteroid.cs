@@ -13,8 +13,17 @@ namespace MORFV.Game
     class Asteroid : Entity
     {
 
-        public Asteroid(Vector2 Location, double Radius, double MaxHealth):base(Location,Radius,MaxHealth)
+        public Asteroid(Vector2 Location, double Radius, double MaxHealth):base()
         {
+            Random rnd = GameInstance.GetInstance().GetRandom();
+
+            this.MaxHealth = MaxHealth;
+            this.Health = this.MaxHealth;
+            this.Radius = Radius;
+            this.Location = Location;
+            this.Momentum = this.Radius * 0.002f;
+            this.Rotation = rnd.NextDouble() * (Math.PI * 2);
+            this.Velocity = new Vector2((float)Math.Cos(this.Rotation), (float)Math.Sin(this.Rotation)) * 1;
 
         }
 

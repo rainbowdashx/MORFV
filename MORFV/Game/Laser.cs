@@ -10,32 +10,32 @@ using Windows.UI.Xaml;
 
 namespace MORFV.Game
 {
-    class Laser:Entity
+    class Laser : Entity
     {
-        private DispatcherTimer dispatcherTimer;
+      
 
-        public Laser(Vector2 Location,double Rotation):base()
+        public Laser(Vector2 Location, double Rotation) : base()
         {
 
             Random rnd = GameInstance.GetInstance().GetRandom();
 
             this.MaxHealth = 100;
             this.Health = this.MaxHealth;
-            this.Radius = 5;
+            this.Radius = 2;
             this.Location = Location;
             this.Rotation = Rotation;
             this.Velocity = new Vector2((float)Math.Cos(this.Rotation), (float)Math.Sin(this.Rotation)) * 15;
 
-            dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += Laser_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
-            dispatcherTimer.Start();
+            SetLifeSpan(5000);
+
         }
 
 
         public override void Update()
         {
             this.Location += this.Velocity;
+
+         
             base.Update();
         }
 
@@ -44,11 +44,6 @@ namespace MORFV.Game
             canvas.FillCircle(Location, (float)Radius, Colors.Cyan);
         }
 
-        private void Laser_Tick(object sender, object e)
-        {
-            dispatcherTimer.Stop();
-            IsPendingKill = true;
-            
-        }
+  
     }
 }

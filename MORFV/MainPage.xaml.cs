@@ -37,7 +37,7 @@ namespace MORFV
         private Player player  = new Player(new Vector2(0, 0), 100);
       
 
-        private List<Entity> entities = new List<Entity>();
+      
         
 
         public MainPage()
@@ -45,7 +45,8 @@ namespace MORFV
             this.InitializeComponent();
             Random rnd = GameInstance.GetInstance().GetRandom();
 
-            GameInstance.GetInstance().crosshair= new Entity(new Vector2(0, 0), 10, 100);
+            GameInstance.GetInstance().crosshair= new Entity();
+            GameInstance.GetInstance().crosshair.Radius = 10;
 
 
             for (int i = 0; i < 100; i++)
@@ -55,8 +56,7 @@ namespace MORFV
                 double y = rnd.NextDouble() * canvas.ActualHeight;
 
                 Asteroid monster = new Asteroid(new Vector2((float)x, (float)y), (rnd.NextDouble()*50)+50, 100);
-                
-                entities.Add(monster);
+
             }
 
 
@@ -76,7 +76,7 @@ namespace MORFV
 
             args.DrawingSession.Clear(Colors.Black);
 
-            foreach (var item in entities.ToList())
+            foreach (var item in GameInstance.GetInstance().entities.ToList())
             {
                 if (!item.IsPendingKill)
                 {
@@ -85,7 +85,7 @@ namespace MORFV
                 }
                 else
                 {
-                    entities.Remove(item);
+                    GameInstance.GetInstance().entities.Remove(item);
                     item.Dispose();
                 }
             }
@@ -119,17 +119,13 @@ namespace MORFV
                 if (ptrPt.Properties.IsLeftButtonPressed)
                 {
                     GameInstance.GetInstance().bLeftKeyDown = true;
-                    Laser l = new Laser(player.Location, player.Rotation);
-                    entities.Add(l);
+                    
                 }
                 if (ptrPt.Properties.IsRightButtonPressed)
                 {
                     GameInstance.GetInstance().bRightKeyDown = true;
                 }
             }
-         
-
-
         }
 
         private void Grid_PointerReleased(object sender, PointerRoutedEventArgs e)
@@ -138,7 +134,6 @@ namespace MORFV
             {
                 GameInstance.GetInstance().bRightKeyDown = false;
                 GameInstance.GetInstance().bLeftKeyDown = false;
-
             }
         }
 

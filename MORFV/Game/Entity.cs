@@ -22,26 +22,22 @@ namespace MORFV.Game
         public double Rotation;
         public bool IsPendingKill = false;
 
+        private DateTime lifeStart;
+        private float lifeSpan;
+
         protected readonly double PI2 = Math.PI*2;
 
         public Entity()
         {
-
+            GameInstance.GetInstance().entities.Add(this);
+            lifeStart = DateTime.Now;
         }
-        
-        public Entity(Vector2 Location,double Radius, double MaxHealth)
+
+        public Entity(bool isPlayer)
         {
-
-            Random rnd = GameInstance.GetInstance().GetRandom();
-
-            this.MaxHealth = MaxHealth;
-            this.Health = this.MaxHealth;
-            this.Radius = Radius;
-            this.Location = Location;
-            this.Momentum = this.Radius * 0.002f;
-            this.Rotation = rnd.NextDouble() * (Math.PI * 2);
-            this.Velocity = new Vector2((float)Math.Cos(this.Rotation), (float)Math.Sin(this.Rotation)) * 1;
-        }
+            //FAKE CONSTRUCTOR
+        }       
+        
 
         public virtual void Update()
         {
@@ -65,12 +61,23 @@ namespace MORFV.Game
             {
                 this.Location.Y = GameInstance.GetInstance().GetArenaSize().Y + (float)this.Radius;
             }
+
+            if (lifeSpan > 0 && (DateTime.Now - lifeStart).TotalMilliseconds > lifeSpan)
+            {
+                IsPendingKill = true;
+            }
         }
 
         public virtual void Draw(CanvasDrawingSession canvas) {
 
             canvas.DrawCircle(this.Location, (float)this.Radius, Colors.OrangeRed);
            
+        }
+
+        public void SetLifeSpan(float value)
+        {
+            lifeSpan = value;
+            lifeStart = DateTime.Now;
         }
 
         public void Dispose()

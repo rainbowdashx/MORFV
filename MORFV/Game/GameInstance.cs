@@ -15,6 +15,7 @@ namespace MORFV.Game
         public Entity crosshair { get; set; }
         public bool bRightKeyDown { get; set; }
         public bool bLeftKeyDown { get; set; }
+        public List<Entity> entities = new List<Entity>();
 
 
         private GameInstance()
@@ -41,8 +42,6 @@ namespace MORFV.Game
         {
             return ArenaSize;
         }
-        
-
 
     }
 }
