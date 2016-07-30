@@ -85,7 +85,6 @@ namespace MORFV
                 }
                 else
                 {
-                    GameInstance.GetInstance().entities.Remove(item);
                     item.Dispose();
                 }
             }

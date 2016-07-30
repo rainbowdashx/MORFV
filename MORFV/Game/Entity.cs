@@ -82,7 +82,7 @@ namespace MORFV.Game
 
         public void Dispose()
         {
-            
+            GameInstance.GetInstance().entities.Remove(this);
         }
     }
 }
