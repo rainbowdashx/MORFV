@@ -146,12 +146,25 @@ namespace MORFV
                     GameInstance.GetInstance().bRightKeyDown = true;
                 }
             }
+
+            if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            {
+                Windows.UI.Input.PointerPoint ptrPt = e.GetCurrentPoint(canvas);
+                GameInstance.GetInstance().bLeftKeyDown = true;
+                GameInstance.GetInstance().bRightKeyDown = true;
+            }
         }
 
         private void Grid_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
             if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
             {
+                GameInstance.GetInstance().bRightKeyDown = false;
+                GameInstance.GetInstance().bLeftKeyDown = false;
+            }
+            if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            {
+                
                 GameInstance.GetInstance().bRightKeyDown = false;
                 GameInstance.GetInstance().bLeftKeyDown = false;
             }
