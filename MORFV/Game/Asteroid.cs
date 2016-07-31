@@ -65,5 +65,16 @@ namespace MORFV.Game
             }
         }
 
+        public override void TakeDamage(float amount)
+        {
+            base.TakeDamage(amount);
+
+            Health -= amount;
+            if (Health <= 0)
+            {
+                IsPendingKill = true;
+            }
+        }
+
     }
 }

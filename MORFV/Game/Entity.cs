@@ -10,7 +10,7 @@ using Windows.UI;
 
 namespace MORFV.Game
 {
-    class Entity  : IDisposable
+    public class Entity  : IDisposable
     {
 
         public Vector2 Location;
@@ -22,8 +22,15 @@ namespace MORFV.Game
         public double Rotation;
         public bool IsPendingKill = false;
 
+
+        
+
         private DateTime lifeStart;
         private float lifeSpan;
+
+        public bool IsCollision=true;
+
+
 
         protected readonly double PI2 = Math.PI*2;
 
@@ -33,11 +40,7 @@ namespace MORFV.Game
             lifeStart = DateTime.Now;
         }
 
-        public Entity(bool isPlayer)
-        {
-            //FAKE CONSTRUCTOR
-        }       
-        
+   
 
         public virtual void Update()
         {
@@ -83,6 +86,33 @@ namespace MORFV.Game
         public void Dispose()
         {
             GameInstance.GetInstance().entities.Remove(this);
+        }
+
+        public virtual void OnCollision(Entity Other)
+        {
+
+        } 
+
+        public virtual void TakeDamage(float amount)
+        {
+
+        }
+        
+        public bool CheckCollision(Entity Other)
+        {
+
+            if (this.Equals(Other))
+            {
+                return false;
+            }
+
+            
+            if ((Other.Location - this.Location).Length() < (float)(this.Radius + Other.Radius))
+            {
+                this.OnCollision(Other);
+                return true;
+            }
+            return false;
         }
     }
 }

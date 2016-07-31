@@ -33,29 +33,38 @@ namespace MORFV
     public sealed partial class MainPage : Page
     {
 
-        private bool bKeyDown = false;
-        private Player player  = new Player(new Vector2(0, 0), 100);
-      
-
-      
         
+        private Player player  = new Player(new Vector2(600, 600), 100);
+        private Quadtree quad;
+
+
+
+
 
         public MainPage()
         {
             this.InitializeComponent();
+
+        }
+
+        private void canvas_Loaded(object sender, RoutedEventArgs e)
+        {
             Random rnd = GameInstance.GetInstance().GetRandom();
 
-            GameInstance.GetInstance().crosshair= new Entity();
+            GameInstance.GetInstance().crosshair = new Entity();
             GameInstance.GetInstance().crosshair.Radius = 10;
+            GameInstance.GetInstance().crosshair.IsCollision = false;
+
+            quad = new Quadtree(0, new Rect(0, 0, canvas.ActualWidth, canvas.ActualHeight));
 
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
 
                 double x = rnd.NextDouble() * canvas.ActualWidth;
                 double y = rnd.NextDouble() * canvas.ActualHeight;
 
-                Asteroid monster = new Asteroid(new Vector2((float)x, (float)y), (rnd.NextDouble()*50)+50, 100);
+                Asteroid monster = new Asteroid(new Vector2((float)x, (float)y), (rnd.NextDouble() * 50) + 50, 100);
 
             }
 
@@ -73,15 +82,29 @@ namespace MORFV
 
         private void canvas_DrawAnimated(Microsoft.Graphics.Canvas.UI.Xaml.ICanvasAnimatedControl sender, Microsoft.Graphics.Canvas.UI.Xaml.CanvasAnimatedDrawEventArgs args)
         {
-
+            List<Entity> returnEntities = new List<Entity>();
             args.DrawingSession.Clear(Colors.Black);
+            
+            quad.Clear();
+            for (int i = 0; i < GameInstance.GetInstance().entities.Count; i++)
+            {
+                quad.insert(GameInstance.GetInstance().entities[i]);
+            }
 
+            
             foreach (var item in GameInstance.GetInstance().entities.ToList())
             {
                 if (!item.IsPendingKill)
                 {
                     item.Update();
                     item.Draw(args.DrawingSession);
+
+                    returnEntities.Clear();
+                    quad.retrieve(returnEntities, item);
+                    for (int i = 0; i < returnEntities.Count; i++)
+                    {
+                        item.CheckCollision(returnEntities[i]);
+                    }
                 }
                 else
                 {
@@ -89,10 +112,8 @@ namespace MORFV
                 }
             }
 
-            player.Update();
-            player.Draw(args.DrawingSession);
+            //quad.Draw(args.DrawingSession);
 
-            GameInstance.GetInstance().crosshair.Draw(args.DrawingSession);
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -146,5 +167,7 @@ namespace MORFV
         {
             GameInstance.GetInstance().SetArenaSize(new Vector2((float)canvas.ActualWidth, (float)canvas.ActualHeight));
         }
+
+    
     }
 }

@@ -12,6 +12,6 @@
     
         
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" PointerMoved="Grid_PointerMoved" PointerPressed="Grid_PointerPressed" PointerReleased="Grid_PointerReleased">
-        <canvas:CanvasAnimatedControl x:Name="canvas" Draw="canvas_DrawAnimated" CreateResources="canvas_CreateResources"/>
+        <canvas:CanvasAnimatedControl x:Name="canvas" Draw="canvas_DrawAnimated" CreateResources="canvas_CreateResources" Loaded="canvas_Loaded"/>
     </Grid>
 </Page>

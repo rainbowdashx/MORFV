@@ -23,7 +23,7 @@ namespace MORFV.Game
         private bool bIsOnCooldown;
 
 
-        public Player(Vector2 Location, double MaxHealth) : base(false)
+        public Player(Vector2 Location, double MaxHealth) : base()
         {
             this.Radius = 15;
 

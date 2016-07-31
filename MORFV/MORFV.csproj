@@ -99,7 +99,9 @@
     <Compile Include="Game\Entity.cs" />
     <Compile Include="Game\GameInstance.cs" />
     <Compile Include="Game\Laser.cs" />
+    <Compile Include="Game\Particle.cs" />
     <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\Quadtree.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

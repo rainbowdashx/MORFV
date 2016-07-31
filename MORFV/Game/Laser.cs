@@ -21,7 +21,7 @@ namespace MORFV.Game
 
             this.MaxHealth = 100;
             this.Health = this.MaxHealth;
-            this.Radius = 2;
+            this.Radius = 1;
             this.Location = Location;
             this.Rotation = Rotation;
             this.Velocity = new Vector2((float)Math.Cos(this.Rotation), (float)Math.Sin(this.Rotation)) * 15;
@@ -41,9 +41,36 @@ namespace MORFV.Game
 
         public override void Draw(CanvasDrawingSession canvas)
         {
-            canvas.FillCircle(Location, (float)Radius, Colors.Cyan);
+            canvas.FillCircle(Location, (float)Radius, Colors.Yellow);
         }
 
-  
+        public override void OnCollision(Entity Other)
+        {
+            base.OnCollision(Other);
+
+            
+            if (Other is Asteroid)
+            {
+                this.IsPendingKill = true;
+                Other.TakeDamage(5f);
+
+                Random rnd = GameInstance.GetInstance().GetRandom();
+
+                for (var i = 0; i < 5; i++)
+                {
+
+                    var d = this.Location - Other.Location;
+                    
+                    var ColAngle = Math.Atan2(d.Y, d.X);
+                    var rndAngle = (rnd.NextDouble() * (0.8 - (-0.8)) + (-0.8));
+                    var rndSpeed = (rnd.NextDouble() * (5 - 2) + 2);
+                    
+                    var p = new Particle(this.Location,1, ColAngle - rndAngle, rndSpeed,Colors.Cyan);
+                    
+                }
+            }
+        }
+
+
     }
 }
